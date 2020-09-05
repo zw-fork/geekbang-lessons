@@ -15,6 +15,7 @@
     <!-- Root BeanDefinition 不需要合并，不存在 parent -->
     <!-- 普通 beanDefinition GenericBeanDefinition -->
     <!-- 经过合并后 GenericBeanDefinition 变成 RootBeanDefinition -->
+    <!-- 定义Bean实例对象及属性值 -->
     <bean id="user" class="org.geekbang.thinking.in.spring.ioc.overview.domain.User">
         <property name="id" value="1"/>
         <property name="name" value="小马哥"/>
@@ -31,9 +32,10 @@
 
     <!-- 普通 beanDefinition GenericBeanDefinition -->
     <!-- 合并后 GenericBeanDefinition 变成 RootBeanDefinition，并且覆盖 parent 相关配置-->
-    <!-- primary = true , 增加了一个 address 属性 -->
+    <!-- primary = true, 当Bean实例重复时(此处SuperUser和User都是User类型的实例)，避免通过类型调用时，发送获取Bean的异常 -->
     <bean id="superUser" class="org.geekbang.thinking.in.spring.ioc.overview.domain.SuperUser" parent="user"
           primary="true">
+        <!--  增加了一个 address 属性 -->
         <property name="address" value="杭州"/>
     </bean>
 
