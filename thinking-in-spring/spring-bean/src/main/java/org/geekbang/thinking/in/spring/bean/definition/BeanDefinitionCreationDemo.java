@@ -23,7 +23,7 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 
 /**
- * {@link org.springframework.beans.factory.config.BeanDefinition} 构建示例
+ * {@link org.springframework.beans.factory.config.BeanDefinition} 构建示例：构建User BeanDefinition
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since
@@ -32,20 +32,24 @@ public class BeanDefinitionCreationDemo {
 
     public static void main(String[] args) {
 
-        // 1.通过 BeanDefinitionBuilder 构建
+        // 方法1.通过 BeanDefinitionBuilder 构建
         BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(User.class);
-        // 通过属性设置
+
+        // 通过属性设置初始化值
         beanDefinitionBuilder
                 .addPropertyValue("id", 1)
                 .addPropertyValue("name", "小马哥");
+
         // 获取 BeanDefinition 实例
-        BeanDefinition beanDefinition = beanDefinitionBuilder.getBeanDefinition();
+        GenericBeanDefinition beanDefinition = (GenericBeanDefinition)beanDefinitionBuilder.getBeanDefinition();
         // BeanDefinition 并非 Bean 终态，可以自定义修改
 
-        // 2. 通过 AbstractBeanDefinition 以及派生类
+
+        // 方法2. 通过 AbstractBeanDefinition 以及派生类
         GenericBeanDefinition genericBeanDefinition = new GenericBeanDefinition();
         // 设置 Bean 类型
         genericBeanDefinition.setBeanClass(User.class);
+        //genericBeanDefinition.setScope();
         // 通过 MutablePropertyValues 批量操作属性
         MutablePropertyValues propertyValues = new MutablePropertyValues();
 //        propertyValues.addPropertyValue("id", 1);
