@@ -34,28 +34,36 @@ public class DependencyInjectionDemo {
     public static void main(String[] args) {
         // 配置 XML 配置文件
         // 启动 Spring 应用上下文
-//        BeanFactory beanFactory = new ClassPathXmlApplicationContext("classpath:/META-INF/dependency-injection-context.xml");
+        BeanFactory beanFactory = new ClassPathXmlApplicationContext("classpath:/META-INF/dependency-injection-context.xml");
+        // 依赖注入来源一：自定义的Bean
+        UserRepository userRepository = beanFactory.getBean("userRepository", UserRepository.class);
+        System.out.println(userRepository.getUsers());
 
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:/META-INF/dependency-injection-context.xml");
-
-        // 依赖来源一：自定义 Bean
-        UserRepository userRepository = applicationContext.getBean("userRepository", UserRepository.class);
-
-//        System.out.println(userRepository.getUsers());
-
-        // 依赖来源二：依赖注入（內建依赖）
-        System.out.println(userRepository.getBeanFactory());
+        //依赖来源二：依赖注入（內建依赖）
+        System.out.println(userRepository.getBeanFactory());  //获取注入的BeanFactory对象
 
 
-        ObjectFactory userFactory = userRepository.getObjectFactory();
+        /**
+         * ApplicationContext实现了BeanFactory接口
+         *
+         * 同时，通过组合的方式注入了一个BeanFactory的实现类：DefaultListableBeanFactory
+         *      org.springframework.context.support.AbstractRefreshableApplicationContext
+         */
+        System.out.println(userRepository.getBeanFactory() == beanFactory);
+        ClassPathXmlApplicationContext classPathXmlApplicationContext = (ClassPathXmlApplicationContext)beanFactory;
+        System.out.println(classPathXmlApplicationContext.getBeanFactory() == userRepository.getBeanFactory());
 
-        System.out.println(userFactory.getObject() == applicationContext);
+        System.out.println("-----------------");
 
-        // 依赖查找（错误）
-//        System.out.println(beanFactory.getBean(BeanFactory.class));
+        //依赖查找（错误）. 查找BeanFactory对象(抛异常<没有定义该Bean>) TODO
+        // System.out.println(beanFactory.getBean(BeanFactory.class));
 
-        // 依赖来源三：容器內建 Bean
-        Environment environment = applicationContext.getBean(Environment.class);
+        System.out.println(userRepository.getUserObjectFactory().getObject());
+        System.out.println(userRepository.getObjectFactory().getObject());
+        System.out.println(userRepository.getObjectFactory().getObject() == beanFactory);
+        System.out.println("-----------------");
+        // 依赖来源三：容器內部自建的Bean
+        Environment environment = beanFactory.getBean(Environment.class);
         System.out.println("获取 Environment 类型的 Bean：" + environment);
     }
 

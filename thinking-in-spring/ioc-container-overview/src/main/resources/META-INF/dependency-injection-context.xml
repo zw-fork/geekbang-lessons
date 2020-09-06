@@ -9,15 +9,20 @@
     <!-- 通过导入复用 dependency-lookup-context.xml -->
     <import resource="dependency-lookup-context.xml"/>
 
-    <bean id="userRepository" class="org.geekbang.thinking.in.spring.ioc.overview.repository.UserRepository"
-          autowire="byType"> <!-- Auto-Wiring -->
-        <!-- 手动配置 -->
-        <!--        <property name="users">-->
-        <!--            <util:list>-->
-        <!--                <ref bean="superUser" />-->
-        <!--                <ref bean="user" />-->
-        <!--            </util:list>-->
-        <!--        </property>-->
 
-    </bean>
+<!--    <bean id="userRepository" class="org.geekbang.thinking.in.spring.ioc.overview.repository.UserRepository"-->
+<!--          autowire="byType"> -->
+<!--        &lt;!&ndash; 方法一：手动配置 &ndash;&gt;-->
+<!--                <property name="users">-->
+<!--                    <util:list>-->
+<!--                        <ref bean="superUser" />-->
+<!--                        <ref bean="user" />-->
+<!--                    </util:list>-->
+<!--                </property>-->
+
+<!--    </bean>-->
+
+    <bean id="userRepository" class="org.geekbang.thinking.in.spring.ioc.overview.repository.UserRepository"
+          autowire="byType"/> <!-- 方法二：自动注入 Auto-Wiring -->
+
 </beans>

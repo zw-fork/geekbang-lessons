@@ -37,6 +37,8 @@ public class UserRepository {
 
     private ObjectFactory<ApplicationContext> objectFactory;
 
+    private ObjectFactory<User> userObjectFactory;
+
     public Collection<User> getUsers() {
         return users;
     }
@@ -60,5 +62,15 @@ public class UserRepository {
 
     public void setObjectFactory(ObjectFactory<ApplicationContext> objectFactory) {
         this.objectFactory = objectFactory;
+    }
+
+    public void setUserObjectFactory(ObjectFactory<User> userObjectFactory)
+    {
+        this.userObjectFactory = userObjectFactory;
+    }
+
+    public ObjectFactory<User> getUserObjectFactory()
+    {
+        return userObjectFactory;
     }
 }
