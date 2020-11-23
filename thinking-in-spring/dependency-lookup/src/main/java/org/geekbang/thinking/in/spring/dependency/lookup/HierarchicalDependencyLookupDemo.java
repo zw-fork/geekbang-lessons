@@ -16,12 +16,17 @@
  */
 package org.geekbang.thinking.in.spring.dependency.lookup;
 
+import org.geekbang.thinking.in.spring.ioc.overview.domain.User;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.HierarchicalBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 层次性依赖查找示例
@@ -39,19 +44,24 @@ public class HierarchicalDependencyLookupDemo {
 
         // 1. 获取 HierarchicalBeanFactory <- ConfigurableBeanFactory <- ConfigurableListableBeanFactory
         ConfigurableListableBeanFactory beanFactory = applicationContext.getBeanFactory();
-//        System.out.println("当前 BeanFactory 的 Parent BeanFactory ： " + beanFactory.getParentBeanFactory());
+        System.out.println("1. 当前 BeanFactory 的 Parent BeanFactory ： " + beanFactory.getParentBeanFactory());
 
-        // 2. 设置 Parent BeanFactory
+        // 2. 设置 Parent BeanFactory.并将xml解析的Bean[user,superUser,objectFactory]加载到该Parent BeanFactory
         HierarchicalBeanFactory parentBeanFactory = createParentBeanFactory();
         beanFactory.setParentBeanFactory(parentBeanFactory);
-//        System.out.println("当前 BeanFactory 的 Parent BeanFactory ： " + beanFactory.getParentBeanFactory());
+        System.out.println("2. 当前 BeanFactory 的 Parent BeanFactory ： " + beanFactory.getParentBeanFactory());
 
         displayContainsLocalBean(beanFactory, "user");
         displayContainsLocalBean(parentBeanFactory, "user");
 
+        System.out.println("--------自定义递归查找---------");
         displayContainsBean(beanFactory, "user");
+        System.out.println("-----------------");
         displayContainsBean(parentBeanFactory, "user");
 
+        System.out.println("--------BeanFactoryUtils：递归查找---------");
+        Map<String, User> userMap = BeanFactoryUtils.beansOfTypeIncludingAncestors(beanFactory, User.class);
+        System.out.println(userMap.toString());
         // 启动应用上下文
         applicationContext.refresh();
 
@@ -61,13 +71,14 @@ public class HierarchicalDependencyLookupDemo {
     }
 
     private static void displayContainsBean(HierarchicalBeanFactory beanFactory, String beanName) {
-        System.out.printf("当前 BeanFactory[%s] 是否包含 Bean[name : %s] : %s\n", beanFactory, beanName,
-                containsBean(beanFactory, beanName));
+        System.out.printf("B. 是否包含 Local Bean[name : %s] : %s. 当前 BeanFactory[%s]\n", beanName,
+                containsBean(beanFactory, beanName), beanFactory);
     }
 
     private static boolean containsBean(HierarchicalBeanFactory beanFactory, String beanName) {
         BeanFactory parentBeanFactory = beanFactory.getParentBeanFactory();
         if (parentBeanFactory instanceof HierarchicalBeanFactory) {
+            System.out.println("--------递归查找Parent Factory---------");
             HierarchicalBeanFactory parentHierarchicalBeanFactory = HierarchicalBeanFactory.class.cast(parentBeanFactory);
             if (containsBean(parentHierarchicalBeanFactory, beanName)) {
                 return true;
@@ -77,8 +88,8 @@ public class HierarchicalDependencyLookupDemo {
     }
 
     private static void displayContainsLocalBean(HierarchicalBeanFactory beanFactory, String beanName) {
-        System.out.printf("当前 BeanFactory[%s] 是否包含 Local Bean[name : %s] : %s\n", beanFactory, beanName,
-                beanFactory.containsLocalBean(beanName));
+        System.out.printf("A. 是否包含 Local Bean[name : %s] : %s. 当前 BeanFactory[%s]\n", beanName,
+                beanFactory.containsLocalBean(beanName), beanFactory);
     }
 
     private static ConfigurableListableBeanFactory createParentBeanFactory() {

@@ -59,6 +59,10 @@ public class User implements BeanNameAware {
      */
     private transient String beanName;
 
+    public User() {
+        this.name = "zw";
+    }
+
     public Long getId() {
         return id;
     }

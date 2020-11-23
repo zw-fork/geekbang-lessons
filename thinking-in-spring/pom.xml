@@ -11,8 +11,17 @@
 
     <modules>
         <module>ioc-container-overview</module>
+        <!--
+        04-Spring Bean基础
+        -->
         <module>spring-bean</module>
+        <!--
+       05-Spring IoC依赖查找(Dependency Lookup)
+       -->
         <module>dependency-lookup</module>
+        <!--
+       06-Spring IoC依赖注入(Dependency Injection)
+       -->
         <module>dependency-injection</module>
         <module>dependency-source</module>
         <module>bean-scope</module>
@@ -29,6 +38,7 @@
         <module>environment</module>
         <module>application-context-lifecycle</module>
         <module>questions</module>
+        <module>java-beans-demo</module>
     </modules>
 
     <properties>

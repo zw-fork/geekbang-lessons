@@ -28,8 +28,10 @@ import java.net.URLStreamHandler;
  * @since
  */
 public class Handler extends URLStreamHandler {
+
     @Override
     protected URLConnection openConnection(URL u) throws IOException {
+        System.out.println("----x handler---------");
         return new XURLConnection(u);
     }
 }

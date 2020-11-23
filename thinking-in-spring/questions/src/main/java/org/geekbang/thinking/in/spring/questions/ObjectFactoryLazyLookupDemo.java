@@ -50,13 +50,18 @@ public class ObjectFactoryLazyLookupDemo {
         ObjectFactory<User> userObjectFactory = objectFactoryLazyLookupDemo.userObjectFactory;
         ObjectFactory<User> userObjectProvider = objectFactoryLazyLookupDemo.userObjectProvider;
 
+        //userObjectFactory、userObjectProvider不是同一个对象，但是是同一个类型
         System.out.println("userObjectFactory == userObjectProvider : " +
                 (userObjectFactory == userObjectProvider));
 
         System.out.println("userObjectFactory.getClass() == userObjectProvider.getClass() : " +
                 (userObjectFactory.getClass() == userObjectProvider.getClass()));
 
-        // 实际对象（延迟查找）
+        // org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons()
+        System.out.println("userObjectFactory class: " + userObjectFactory.getClass().toString());
+        System.out.println("userObjectProvider class: " + userObjectProvider.getClass().toString());
+
+        // 实际对象User（延迟查找）。@Lazy注解的对象，在实际使用时才查找(注入)
         System.out.println("user = " + userObjectFactory.getObject());
         System.out.println("user = " + userObjectProvider.getObject());
         System.out.println("user = " + context.getBean(User.class));
@@ -72,6 +77,10 @@ public class ObjectFactoryLazyLookupDemo {
     @Autowired
     private ObjectProvider<User> userObjectProvider;
 
+    /**
+     * Lazy: 延迟初始化
+     * @return User
+     */
     @Bean
     @Lazy
     public static User user() {

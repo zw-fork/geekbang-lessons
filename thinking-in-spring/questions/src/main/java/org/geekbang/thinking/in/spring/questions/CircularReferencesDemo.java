@@ -16,11 +16,14 @@
  */
 package org.geekbang.thinking.in.spring.questions;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 /**
  * BeanFactory 循环引用（依赖）示例
+ *
+ * ClassRoom与Student为一对多关系
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since

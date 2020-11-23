@@ -20,7 +20,10 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 
 /**
+ * 自动注入：
+ *
  * "byName" Autowiring 依赖 Setter 方法注入示例
+ * "byType" 优先使用被primary修饰的对象
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since
@@ -37,8 +40,11 @@ public class AutoWiringByNameDependencySetterInjectionDemo {
         // 加载 XML 资源，解析并且生成 BeanDefinition
         beanDefinitionReader.loadBeanDefinitions(xmlResourcePath);
         // 依赖查找并且创建 Bean
-        UserHolder userHolder = beanFactory.getBean(UserHolder.class);
-        System.out.println(userHolder);
+        UserHolder userHolderByType = beanFactory.getBean("userHolderByType", UserHolder.class);
+        System.out.println(userHolderByType);
+        System.out.println("--------------");
+        UserHolder userHolderByName = beanFactory.getBean("userHolderByName", UserHolder.class);
+        System.out.println(userHolderByName);
 
     }
 

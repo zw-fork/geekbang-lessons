@@ -56,7 +56,7 @@ public class AnnotationDependencyInjectionResolutionDemo {
     // 通过类型（User.class）
     // 字段名称（"user"）
     // 是否首要（primary = true)
-    @Autowired          // 依赖查找（处理）
+    @Autowired          // 依赖查找
     private User user;
 
     @Autowired          // 集合类型依赖注入

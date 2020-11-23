@@ -17,7 +17,6 @@
 package sun.net.www.protocol.x;
 
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.UrlResource;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,7 +41,7 @@ public class XURLConnection extends URLConnection {
      */
 
     // URL = x:///META-INF/default.properties
-    protected XURLConnection(URL url) {
+    public XURLConnection(URL url) {
         super(url);
         this.resource = new ClassPathResource(url.getPath());
     }

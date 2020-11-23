@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.Map;
 
 import static org.springframework.beans.factory.support.BeanDefinitionBuilder.genericBeanDefinition;
@@ -44,20 +45,27 @@ public class AnnotationBeanDefinitionDemo {
     public static void main(String[] args) {
         // 创建 BeanFactory 容器
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+
+        // 注册BeanDefinition方法一：加载注解配置，默认名称为方法名。
         // 注册 Configuration Class（配置类）
         applicationContext.register(AnnotationBeanDefinitionDemo.class);
 
+        // 注册BeanDefinition方法二：指定名称
         // 通过 BeanDefinition 注册 API 实现
         // 1.命名 Bean 的注册方式
         registerUserBeanDefinition(applicationContext, "mercyblitz-user");
+
+        // 注册BeanDefinition方法三：使用默认命名方法
         // 2. 非命名 Bean 的注册方法
         registerUserBeanDefinition(applicationContext);
 
         // 启动 Spring 应用上下文
         applicationContext.refresh();
+
         // 按照类型依赖查找
         System.out.println("Config 类型的所有 Beans" + applicationContext.getBeansOfType(Config.class));
         System.out.println("User 类型的所有 Beans" + applicationContext.getBeansOfType(User.class));
+        System.out.println("User size = " + applicationContext.getBeansOfType(User.class).size());
         // 显示地关闭 Spring 应用上下文
         applicationContext.close();
     }
@@ -65,7 +73,7 @@ public class AnnotationBeanDefinitionDemo {
     public static void registerUserBeanDefinition(BeanDefinitionRegistry registry, String beanName) {
         BeanDefinitionBuilder beanDefinitionBuilder = genericBeanDefinition(User.class);
         beanDefinitionBuilder
-                .addPropertyValue("id", 1L)
+                .addPropertyValue("id", System.currentTimeMillis())
                 .addPropertyValue("name", "小马哥");
 
         // 判断如果 beanName 参数存在时
@@ -89,13 +97,21 @@ public class AnnotationBeanDefinitionDemo {
         // 1. 通过 @Bean 方式定义
 
         /**
-         * 通过 Java 注解的方式，定义了一个 Bean
+         * 通过 Java 注解的方式，定义了一个 Bean，并指定名称
          */
-        @Bean(name = {"user", "xiaomage-user"})
+        @Bean(name = {"xiaomage-user", "userA"})  //
         public User user() {
             User user = new User();
             user.setId(1L);
-            user.setName("小马哥");
+            user.setName("小马哥A");
+            return user;
+        }
+
+        @Bean
+        public User user123() {
+            User user = new User();
+            user.setId(123L);
+            user.setName("小马哥123");
             return user;
         }
     }

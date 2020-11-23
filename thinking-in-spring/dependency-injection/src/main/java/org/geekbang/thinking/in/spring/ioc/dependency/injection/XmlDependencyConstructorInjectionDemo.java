@@ -20,6 +20,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 
 /**
+ * 构造方法注入：
  * 基于 XML 资源的依赖 Constructor 注入示例
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>

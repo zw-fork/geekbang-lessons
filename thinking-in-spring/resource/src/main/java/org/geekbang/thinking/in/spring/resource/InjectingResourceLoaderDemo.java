@@ -16,7 +16,6 @@
  */
 package org.geekbang.thinking.in.spring.resource;
 
-import org.geekbang.thinking.in.spring.resource.util.ResourceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ResourceLoaderAware;
@@ -26,7 +25,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
 import javax.annotation.PostConstruct;
-import java.util.stream.Stream;
 
 /**
  * 注入 {@link ResourceLoader} 对象示例
@@ -50,10 +48,12 @@ public class InjectingResourceLoaderDemo implements ResourceLoaderAware {
 
     @PostConstruct
     public void init() {
+        System.out.println("resourceLoader:" + resourceLoader.toString());
         System.out.println("resourceLoader == autowiredResourceLoader : " + (resourceLoader == autowiredResourceLoader));
         System.out.println("resourceLoader == applicationContext : " + (resourceLoader == applicationContext));
     }
 
+    // 方法一
     @Override
     public void setResourceLoader(ResourceLoader resourceLoader) {
         this.resourceLoader = resourceLoader;
@@ -61,6 +61,7 @@ public class InjectingResourceLoaderDemo implements ResourceLoaderAware {
 
     public static void main(String[] args) {
 
+        //AnnotationConfigApplicationContext是一个ResourceLoader
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         // 注册当前类作为 Configuration Class
         context.register(InjectingResourceLoaderDemo.class);

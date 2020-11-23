@@ -18,15 +18,16 @@
     <!-- 定义Bean实例对象及属性值 -->
     <bean id="user" class="org.geekbang.thinking.in.spring.ioc.overview.domain.User">
         <property name="id" value="1"/>
-        <property name="name" value="小马哥"/>
-        <property name="city" value="HANGZHOU"/>
-        <property name="workCities" value="BEIJING,HANGZHOU"/>
-        <property name="lifeCities">
+        <property name="name" value="user"/>
+        <property name="city" value="HANGZHOU"/>   <!--city为枚举类型 注入枚举类型 -->
+        <property name="workCities" value="BEIJING,HANGZHOU"/>   <!-- 注入枚举类型数组 -->
+        <property name="lifeCities">  <!-- 注入枚举类型集合 -->
             <list>
                 <value>BEIJING</value>
                 <value>SHANGHAI</value>
             </list>
         </property>
+        <!-- 注入Resource类型对象。此处，value以classpath:开头，将会解析为ClassPathResource具体实现类 -->
         <property name="configFileLocation" value="classpath:/META-INF/user-config.properties"/>
     </bean>
 
@@ -37,10 +38,32 @@
           primary="true">
         <!--  增加了一个 address 属性 -->
         <property name="address" value="杭州"/>
+        <property name="name" value="superUser"/>
+        <property name="users">  <!-- 注入user类型数组 -->
+            <array>
+                <ref bean="userA"/>
+                <ref bean="userB"/>
+            </array>
+        </property>
+        <property name="userList">  <!-- 注入user类型集合 -->
+            <list>
+                <ref bean="user"/>
+                <ref bean="userA"/>
+                <ref bean="userB"/>
+            </list>
+        </property>
     </bean>
 
     <bean id="objectFactory" class="org.springframework.beans.factory.config.ObjectFactoryCreatingFactoryBean">
         <property name="targetBeanName" value="user"/>
+    </bean>
+
+    <bean id="userA" class="org.geekbang.thinking.in.spring.ioc.overview.domain.User">
+        <property name="name" value="userA"/>
+    </bean>
+
+    <bean id="userB" class="org.geekbang.thinking.in.spring.ioc.overview.domain.User">
+        <property name="name" value="userB"/>
     </bean>
 
 </beans>

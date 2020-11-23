@@ -39,11 +39,17 @@ public class BeanConfigurationMetadataDemo {
         // BeanDefinition 的定义（声明）
         BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(User.class);
         beanDefinitionBuilder.addPropertyValue("name", "mercyblitz");
+        beanDefinitionBuilder.addPropertyValue("contextAsText", "11111111");
+
         // 获取 AbstractBeanDefinition
         AbstractBeanDefinition beanDefinition = beanDefinitionBuilder.getBeanDefinition();
-        // 附加属性（不影响 Bean populate、initialize）
+
+        // 附加属性（不影响 Bean populate(实例化)、initialize（初始化）
         beanDefinition.setAttribute("name", "小马哥");
-        // 当前 BeanDefinition 来自于何方（辅助作用）
+        beanDefinition.setAttribute("contextAsText", "22222222");
+        beanDefinition.setAttribute("id", 123L);
+
+        // 当前 BeanDefinition 的来源（辅助作用）
         beanDefinition.setSource(BeanConfigurationMetadataDemo.class);
 
         DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
@@ -55,8 +61,9 @@ public class BeanConfigurationMetadataDemo {
                     BeanDefinition bd = beanFactory.getBeanDefinition(beanName);
                     if (BeanConfigurationMetadataDemo.class.equals(bd.getSource())) { // 通过 source 判断来
                         // 属性（存储）上下文
-                        String name = (String) bd.getAttribute("name"); // 就是 "小马哥"
+                        String name = (String) bd.getAttribute("name"); // 更改实例化属性name的值
                         User user = (User) bean;
+                        System.out.println("更改前,name="+user.getName() + " --- 更改后,name=" + name);
                         user.setName(name);
                     }
                 }

@@ -20,6 +20,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 
 /**
+ * 自动绑定：
  * "constructor" Autowiring 依赖构造器注入示例
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>

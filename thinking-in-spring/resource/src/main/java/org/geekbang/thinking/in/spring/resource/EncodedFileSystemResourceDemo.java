@@ -35,9 +35,12 @@ import java.io.Reader;
 public class EncodedFileSystemResourceDemo {
 
     public static void main(String[] args) throws IOException {
-        String currentJavaFilePath = System.getProperty("user.dir") + "/thinking-in-spring/resource/src/main/java/org/geekbang/thinking/in/spring/resource/EncodedFileSystemResourceDemo.java";
+        System.out.println(System.getProperty("user.dir"));
+        String currentJavaFilePath = System.getProperty("user.dir") + "/resource/src/main/java/org/geekbang/thinking/in/spring/resource/EncodedFileSystemResourceDemo.java";
         File currentJavaFile = new File(currentJavaFilePath);
         // FileSystemResource => WritableResource => Resource
+       // FileSystemResource fileSystemResource = new FileSystemResource(currentJavaFile);
+
         FileSystemResource fileSystemResource = new FileSystemResource(currentJavaFilePath);
         EncodedResource encodedResource = new EncodedResource(fileSystemResource, "UTF-8");
         // 字符输入流
@@ -46,4 +49,5 @@ public class EncodedFileSystemResourceDemo {
             System.out.println(IOUtils.toString(reader));
         }
     }
+
 }

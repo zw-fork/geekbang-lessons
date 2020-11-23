@@ -63,6 +63,7 @@ public class ApiDependencyConstructorInjectionDemo {
      */
     private static BeanDefinition createUserHolderBeanDefinition() {
         BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(UserHolder.class);
+        // 给构造方法注入对象
         definitionBuilder.addConstructorArgReference("superUser");
         return definitionBuilder.getBeanDefinition();
     }

@@ -38,11 +38,13 @@ public class ApiDependencySetterInjectionDemo {
 
         // 生成 UserHolder 的 BeanDefinition
         BeanDefinition userHolderBeanDefinition = createUserHolderBeanDefinition();
+
         // 注册 UserHolder 的 BeanDefinition
         applicationContext.registerBeanDefinition("userHolder", userHolderBeanDefinition);
 
-        XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(applicationContext);
 
+        // 加载XML，生成User 的 BeanDefinition，并注册到applicationContext
+        XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(applicationContext);
         String xmlResourcePath = "classpath:/META-INF/dependency-lookup-context.xml";
         // 加载 XML 资源，解析并且生成 BeanDefinition
         beanDefinitionReader.loadBeanDefinitions(xmlResourcePath);
@@ -65,7 +67,7 @@ public class ApiDependencySetterInjectionDemo {
      */
     private static BeanDefinition createUserHolderBeanDefinition() {
         BeanDefinitionBuilder definitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(UserHolder.class);
-        definitionBuilder.addPropertyReference("user", "superUser");
+        definitionBuilder.addPropertyReference("user", "superUser"); //注入名称为superUser的User对象
         return definitionBuilder.getBeanDefinition();
     }
 

@@ -6,10 +6,14 @@
 
     <import resource="classpath:/META-INF/dependency-lookup-context.xml"/>
 
-    <bean class="org.geekbang.thinking.in.spring.ioc.dependency.injection.UserHolder"
-          autowire="byType"
-    >
-<!--        <property name="user" ref="superUser" /> 替换成 autowiring 模式 -->
-    </bean>
+    <!-- 根据类型注入。 有两个类型为User的对象，优先使用被primary修饰的对象。即，此处User对象注入superUser-->
+    <bean id="userHolderByType" class="org.geekbang.thinking.in.spring.ioc.dependency.injection.UserHolder"
+          autowire="byType"/>
+    <!--        <property name="user" ref="superUser" /> 替换成 autowiring 模式 -->
+
+
+    <!-- 根据对象名称注入。User对象名称有两个：user 和 superUser.  UserHolder类中User名称为user-->
+    <bean id="userHolderByName"  class="org.geekbang.thinking.in.spring.ioc.dependency.injection.UserHolder"
+          autowire="byName"/>
 
 </beans>

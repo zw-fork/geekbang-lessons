@@ -35,21 +35,22 @@ public class AnnotationDependencySetterInjectionDemo {
         // 创建 BeanFactory 容器
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
         // 注册 Configuration Class（配置类）
-        applicationContext.register(AnnotationDependencySetterInjectionDemo.class);
+        applicationContext.register(AnnotationDependencySetterInjectionDemo.class);  //生成UserHolder BeanDefinition
 
         XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(applicationContext);
 
         String xmlResourcePath = "classpath:/META-INF/dependency-lookup-context.xml";
-        // 加载 XML 资源，解析并且生成 BeanDefinition
+        // 加载 XML 资源，将User类解析并且生成 BeanDefinition. 将其注册到applicationContext中
         beanDefinitionReader.loadBeanDefinitions(xmlResourcePath);
 
-        // 启动 Spring 应用上下文
+        System.out.println("--------------");
+        // 启动 Spring 应用上下文。启动容器，初始化Bean. (创建UserHolder对象，及其依赖的User对象)
         applicationContext.refresh();
-
+        System.out.println("--------------");
         // 依赖查找并且创建 Bean
         UserHolder userHolder = applicationContext.getBean(UserHolder.class);
         System.out.println(userHolder);
-
+        System.out.println("--------------");
         // 显示地关闭 Spring 应用上下文
         applicationContext.close();
     }

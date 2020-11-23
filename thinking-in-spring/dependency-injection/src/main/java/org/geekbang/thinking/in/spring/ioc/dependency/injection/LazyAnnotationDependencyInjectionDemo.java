@@ -44,10 +44,11 @@ public class LazyAnnotationDependencyInjectionDemo {
     @Qualifier("user")
     private User user; // 实时注入
 
-    @Autowired
-    private ObjectProvider<User> userObjectProvider; // 延迟注入
+    // @Qualifier("user")   //指定注入名称为user的User的集合
+    @Autowired  //注入所有类型为User的集合
+    private ObjectProvider<User> userObjectProvider; // 延迟注入. 调用getObject()方法时才注入需要的User对象
 
-    @Autowired
+    @Autowired   //注入所有类型为User的集合
     private ObjectFactory<Set<User>> usersObjectFactory;
 
     public static void main(String[] args) {
@@ -73,10 +74,11 @@ public class LazyAnnotationDependencyInjectionDemo {
         System.out.println("demo.user = " + demo.user);
         // 期待输出 superUser Bean
         System.out.println("demo.userObjectProvider = " + demo.userObjectProvider.getObject()); // 继承 ObjectFactory
+        demo.userObjectProvider.forEach(System.out::println);
+        System.out.println("--------------------------------------");
         // 期待输出 superUser user Beans
         System.out.println("demo.usersObjectFactory = " + demo.usersObjectFactory.getObject());
-
-        demo.userObjectProvider.forEach(System.out::println);
+        demo.usersObjectFactory.getObject().forEach(System.out::println);
 
 
         // 显示地关闭 Spring 应用上下文

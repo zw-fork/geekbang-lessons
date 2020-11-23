@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Bean;
 import javax.annotation.Resource;
 
 /**
- * 基于 Java 注解的依赖字段注入示例
+ * 基于 Java 注解的依赖 字段 注入示例
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since

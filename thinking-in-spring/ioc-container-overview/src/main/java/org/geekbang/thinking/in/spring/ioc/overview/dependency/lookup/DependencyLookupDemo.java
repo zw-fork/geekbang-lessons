@@ -48,6 +48,7 @@ public class DependencyLookupDemo {
 
         // 按照类型查找
         lookupByType(beanFactory);
+
         // 按照类型查找结合对象
         lookupCollectionByType(beanFactory);
 
@@ -60,7 +61,7 @@ public class DependencyLookupDemo {
         if (beanFactory instanceof ListableBeanFactory) {
             ListableBeanFactory listableBeanFactory = (ListableBeanFactory) beanFactory;
             Map<String, User> users = (Map) listableBeanFactory.getBeansWithAnnotation(Super.class);
-            System.out.println("查找标注 @Super 所有的 User 集合对象：" + users);
+            System.out.printf("查找标注 @Super 所有的 User 集合对象(size=%s)：" + users, users.size());
         }
     }
 
@@ -69,7 +70,8 @@ public class DependencyLookupDemo {
             ListableBeanFactory listableBeanFactory = (ListableBeanFactory) beanFactory;
             //map对象中key为ID，value为对象
             Map<String, User> users = listableBeanFactory.getBeansOfType(User.class);
-            System.out.println("查找到的所有的 User 集合对象：" + users);
+            System.out.printf("查找到的所有的 User 集合对象(size=%s)：" + users, users.size());
+            System.out.println();
         }
     }
 

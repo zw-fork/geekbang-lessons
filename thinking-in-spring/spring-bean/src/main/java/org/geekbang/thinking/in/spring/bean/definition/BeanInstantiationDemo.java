@@ -32,8 +32,13 @@ public class BeanInstantiationDemo {
         // 配置 XML 配置文件
         // 启动 Spring 应用上下文
         BeanFactory beanFactory = new ClassPathXmlApplicationContext("classpath:/META-INF/bean-instantiation-context.xml");
+
+        // 方法一：通过Bean工厂方法实例化 Bean
         User user = beanFactory.getBean("user-by-static-method", User.class);
+
+        // 方法三：通过FactoryBean实例化 Bean
         User userByInstanceMethod = beanFactory.getBean("user-by-instance-method", User.class);
+
         User userByFactoryBean = beanFactory.getBean("user-by-factory-bean", User.class);
         System.out.println(user);
         System.out.println(userByInstanceMethod);

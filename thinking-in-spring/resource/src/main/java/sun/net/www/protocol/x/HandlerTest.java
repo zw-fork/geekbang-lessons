@@ -20,12 +20,11 @@ import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 
 /**
- * X Handler 测试示例
+ * 自定义X协议 Handler 测试示例
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since
@@ -33,7 +32,12 @@ import java.nio.charset.Charset;
 public class HandlerTest {
 
     public static void main(String[] args) throws IOException {
+
+        //java.net.URL.getURLStreamHandler(protocol)：根据协议类型protocol，获取处理的Handler对象
+
+        // 指定协议类型为x；该协议将会由sun.net.www.protocol.x 包下的Handler类处理
         URL url = new URL("x:///META-INF/default.properties"); // 类似于 classpath:/META-INF/default.properties
+
         InputStream inputStream = url.openStream();
         System.out.println(StreamUtils.copyToString(inputStream, Charset.forName("UTF-8")));
     }

@@ -18,6 +18,9 @@ package org.geekbang.thinking.in.spring.ioc.overview.domain;
 
 import org.geekbang.thinking.in.spring.ioc.overview.annotation.Super;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 超级用户
  *
@@ -29,6 +32,10 @@ public class SuperUser extends User {
 
     private String address;
 
+    private List<User> userList;
+
+    private User[] users;
+
     public String getAddress() {
         return address;
     }
@@ -37,10 +44,32 @@ public class SuperUser extends User {
         this.address = address;
     }
 
+    public void setUserList(List<User> userList)
+    {
+        this.userList = userList;
+    }
+
+    public List<User> getUserList()
+    {
+        return userList;
+    }
+
+    public void setUsers(User[] users)
+    {
+        this.users = users;
+    }
+
+    public User[] getUsers()
+    {
+        return users;
+    }
+
     @Override
     public String toString() {
         return "SuperUser{" +
-                "address='" + address + '\'' +
+                "address='" + address +
+                ", users=" + Arrays.toString(users) +
+                ", userList=" + userList + '\'' +
                 "} " + super.toString();
     }
 }

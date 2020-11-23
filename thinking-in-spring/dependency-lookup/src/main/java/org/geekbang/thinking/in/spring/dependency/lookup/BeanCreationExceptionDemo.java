@@ -37,6 +37,7 @@ public class BeanCreationExceptionDemo {
 
         // 注册 BeanDefinition Bean Class 是一个 POJO 普通类，不过初始化方法回调时抛出异常
         BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(POJO.class);
+        System.out.println("==================");
         applicationContext.registerBeanDefinition("errorBean", beanDefinitionBuilder.getBeanDefinition());
 
         // 启动应用上下文

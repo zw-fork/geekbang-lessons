@@ -37,11 +37,12 @@ import java.util.Collection;
 @Configuration
 public class QualifierAnnotationDependencyInjectionDemo {
 
+    // xml配置中设置superUser的primary属性为true，这默认使用该对象
     @Autowired
-    private User user; // superUser -> primary =true
+    private User user;
 
     @Autowired
-    @Qualifier("user") // 指定 Bean 名称或 ID
+    @Qualifier("user") // 使用指定名称的Bean
     private User namedUser;
 
     // 整体应用上下文存在 4 个 User 类型的 Bean:
@@ -50,45 +51,54 @@ public class QualifierAnnotationDependencyInjectionDemo {
     // user1 -> @Qualifier
     // user2 -> @Qualifier
 
+    //总共6个Bean对象：user + superUser + userA + userB + user3 + user4.  4个没使用@Qualifier注解的Bean和2个使用了@Qualifier注解的静态Bean
+    // 注意：如果 @Qualifier使用到了静态和非静态两种Bean上时，此处集合不会包含非静态的Bean. 即，user1、user5不包含
     @Autowired
     private Collection<User> allUsers; // 2 Beans = user + superUser
 
     @Autowired
-    @Qualifier
-    private Collection<User> qualifiedUsers; // 2 Beans = user1 + user2 -> 4 Beans = user1 + user2 + user3 + user4
+    @Qualifier  // 注意：如果 @Qualifier使用到了静态和非静态两种Bean上时，此处集合不会包含非静态的Bean. 即，user1、user5不包含
+    private Collection<User> qualifiedUsers;
 
     @Autowired
-    @UserGroup
+    @UserGroup // 注意：如果 @Qualifier使用到了静态和非静态两种Bean上时，此处集合不会包含非静态的Bean. 即，只包含user3和user4
     private Collection<User> groupedUsers; // 2 Beans = user3 + user4
 
     @Bean
     @Qualifier // 进行逻辑分组
     public User user1() {
-        return createUser(7L);
+        return createUser("user1");
     }
 
     @Bean
     @Qualifier // 进行逻辑分组
     public static User user2() {
-        return createUser(8L);
+        return createUser("user2");
 
     }
 
     @Bean
     @UserGroup
     public static User user3() {
-        return createUser(9L);
+        return createUser("user3");
     }
 
     @Bean
     @UserGroup
     public static User user4() {
-        return createUser(10L);
+        return createUser("user4");
     }
 
-    private static User createUser(Long id) {
+    @Bean
+    @UserGroup
+    public User user5() {
+        return createUser("user5");
+
+    }
+
+    private static User createUser(String id) {
         User user = new User();
-        user.setId(id);
+        user.setName(id);
         return user;
     }
 
@@ -116,11 +126,13 @@ public class QualifierAnnotationDependencyInjectionDemo {
         // 期待输出 user Bean
         System.out.println("demo.namedUser = " + demo.namedUser);
         // 期待输出 superUser user user1 user2
-        System.out.println("demo.allUsers = " + demo.allUsers);
+        System.out.printf("demo.allUsers(size=%s, value = %s)\n", demo.allUsers.size(), demo.allUsers);
+        demo.allUsers.stream().forEach(value -> System.out.println(value.getName()));
         // 期待输出 user1 user2
-        System.out.println("demo.qualifiedUsers = " + demo.qualifiedUsers);
+        System.out.printf("demo.qualifiedUsers(size=%s, value = %s)\n", demo.qualifiedUsers.size(), demo.qualifiedUsers);
+        demo.qualifiedUsers.stream().forEach(value -> System.out.println(value.getName()));
         // 期待输出 user3 user4
-        System.out.println("demo.groupedUsers = " + demo.groupedUsers);
+        System.out.printf("demo.groupedUsers(size=%s, value = %s)\n", demo.groupedUsers.size(), demo.groupedUsers);
 
 
         // 显示地关闭 Spring 应用上下文

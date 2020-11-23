@@ -17,13 +17,17 @@
 package org.geekbang.thinking.in.spring.questions;
 
 import org.geekbang.thinking.in.spring.ioc.overview.domain.User;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
+
+import java.util.function.BiConsumer;
 
 /**
  * Bean 是否缓存示例
@@ -36,6 +40,21 @@ import org.springframework.context.annotation.Scope;
 public class BeanCachingDemo {
 
     public static void main(String[] args) {
+
+        DefaultSingletonBeanRegistry defaultSingletonBeanRegistry = new DefaultSingletonBeanRegistry();
+        defaultSingletonBeanRegistry.getSingleton("", () -> {
+            try {
+                return "aaaa";
+            }
+            catch (BeansException ex) {
+                throw ex;
+            }
+        });
+
+        BiConsumer<Integer, String> b = (Integer x, String y) -> System.out.println(x + " : " + y);
+
+
+
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         // 注册 Configuration Class
         context.register(BeanCachingDemo.class);
@@ -51,8 +70,8 @@ public class BeanCachingDemo {
             System.out.println(beanCachingDemo == context.getBean(BeanCachingDemo.class));
         }
 
+        System.out.println("-----------------------------------");
         User user = context.getBean(User.class);
-
         for (int i = 0; i < 9; i++) {
             // Prototype Scope Bean
             System.out.println(user == context.getBean(User.class));
@@ -70,4 +89,5 @@ public class BeanCachingDemo {
         user.setName("小马哥");
         return user;
     }
+
 }

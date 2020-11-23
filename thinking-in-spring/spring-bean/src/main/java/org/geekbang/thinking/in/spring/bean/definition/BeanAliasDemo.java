@@ -16,11 +16,15 @@
  */
 package org.geekbang.thinking.in.spring.bean.definition;
 
+import org.geekbang.thinking.in.spring.ioc.overview.container.AnnotationApplicationContextAsIoCContainerDemo;
 import org.geekbang.thinking.in.spring.ioc.overview.domain.User;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
+ * {@link org.springframework.beans.factory.support.BeanNameGenerator}
+ *
  * Bean 别名示例
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
@@ -36,5 +40,6 @@ public class BeanAliasDemo {
         User user = beanFactory.getBean("user", User.class);
         User xiaomageUser = beanFactory.getBean("xiaomage-user", User.class);
         System.out.println("xiaomage-user 是否与 user Bean 相同：" + (user == xiaomageUser));
+
     }
 }

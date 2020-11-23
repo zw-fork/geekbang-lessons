@@ -40,16 +40,18 @@ public class TypeSafetyDependencyLookupDemo {
         // 启动应用上下文
         applicationContext.refresh();
 
-        // 演示 BeanFactory#getBean 方法的安全性
+        // 演示 BeanFactory#getBean 方法的安全性(非安全，Bean不存在，则抛出异常)
         displayBeanFactoryGetBean(applicationContext);
-        // 演示 ObjectFactory#getObject 方法的安全性
+        // 演示 ObjectFactory#getObject 方法的安全性(非安全，Bean不存在，则抛出异常)
         displayObjectFactoryGetObject(applicationContext);
-        // 演示 ObjectProvider#getIfAvaiable 方法的安全性
+
+
+        // 演示 ObjectProvider#getIfAvaiable 方法的安全性(安全，Bean不存在，则返回null)
         displayObjectProviderIfAvailable(applicationContext);
 
-        // 演示 ListableBeanFactory#getBeansOfType 方法的安全性
+        // 演示 ListableBeanFactory#getBeansOfType 方法的安全性(安全，Bean不存在，则返回{}<空map>)
         displayListableBeanFactoryGetBeansOfType(applicationContext);
-        // 演示 ObjectProvider Stream 操作的安全性
+        // 演示 ObjectProvider Stream 操作的安全性(安全，Bean不存在，则返回null)
         displayObjectProviderStreamOps(applicationContext);
 
         // 关闭应用上下文
@@ -62,12 +64,12 @@ public class TypeSafetyDependencyLookupDemo {
     }
 
     private static void displayListableBeanFactoryGetBeansOfType(ListableBeanFactory beanFactory) {
-        printBeansException("displayListableBeanFactoryGetBeansOfType", () -> beanFactory.getBeansOfType(User.class));
+        printBeansException("displayListableBeanFactoryGetBeansOfType", () -> System.err.println(beanFactory.getBeansOfType(User.class)));
     }
 
     private static void displayObjectProviderIfAvailable(AnnotationConfigApplicationContext applicationContext) {
         ObjectProvider<User> userObjectProvider = applicationContext.getBeanProvider(User.class);
-        printBeansException("displayObjectProviderIfAvailable", () -> userObjectProvider.getIfAvailable());
+        printBeansException("displayObjectProviderIfAvailable", () -> System.err.println(userObjectProvider.getIfAvailable()));
     }
 
     private static void displayObjectFactoryGetObject(AnnotationConfigApplicationContext applicationContext) {
@@ -77,9 +79,14 @@ public class TypeSafetyDependencyLookupDemo {
     }
 
     public static void displayBeanFactoryGetBean(BeanFactory beanFactory) {
-        printBeansException("displayBeanFactoryGetBean", () -> beanFactory.getBean(User.class));
+        printBeansException("displayBeanFactoryGetBean", () -> System.err.println(beanFactory.getBean(User.class)));
     }
 
+    /**
+     * 使用线程输出结果，避免测试方法发生异常时，程序结束。
+     * @param source
+     * @param runnable
+     */
     private static void printBeansException(String source, Runnable runnable) {
         System.err.println("==========================================");
         System.err.println("Source from :" + source);

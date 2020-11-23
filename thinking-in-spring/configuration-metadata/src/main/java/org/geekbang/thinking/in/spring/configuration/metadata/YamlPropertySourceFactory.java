@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * YAML 格式的 {@link PropertySourceFactory} 实现
+ * 基于 YAML 格式的 {@link PropertySourceFactory} 实现
  *
  * @author <a href="mailto:mercyblitz@gmail.com">Mercy</a>
  * @since

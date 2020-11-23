@@ -43,10 +43,11 @@ public class CustomizedResourcePatternResolverDemo {
     public static void main(String[] args) throws IOException {
         // 读取当前 package 对应的所有的 .java 文件
         // *.java
-        String currentPackagePath = "/" + System.getProperty("user.dir") + "/thinking-in-spring/resource/src/main/java/org/geekbang/thinking/in/spring/resource/";
+        String currentPackagePath = "/" + System.getProperty("user.dir") + "/resource/src/main/java/org/geekbang/thinking/in/spring/resource/";
         String locationPattern = currentPackagePath + "*.java";
         PathMatchingResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver(new FileSystemResourceLoader());
 
+        // 设置新的资源匹配器
         resourcePatternResolver.setPathMatcher(new JavaFilePathMatcher());
 
         Resource[] resources = resourcePatternResolver.getResources(locationPattern);
@@ -54,6 +55,9 @@ public class CustomizedResourcePatternResolverDemo {
         Stream.of(resources).map(ResourceUtils::getContent).forEach(System.out::println);
     }
 
+    /**
+     * 扩展资源加载处理器
+     */
     static class JavaFilePathMatcher implements PathMatcher {
 
         @Override

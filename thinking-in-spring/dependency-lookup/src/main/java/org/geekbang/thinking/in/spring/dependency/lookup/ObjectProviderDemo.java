@@ -37,9 +37,15 @@ public class ObjectProviderDemo { // @Configuration 是非必须注解
         applicationContext.register(ObjectProviderDemo.class);
         // 启动应用上下文
         applicationContext.refresh();
+
+        System.out.println("---------ObjectProvider-----------");
         // 依赖查找集合对象
         lookupByObjectProvider(applicationContext);
+
+        System.out.println("---------getIfAvailable：Bean不存在，则创建-----------");
         lookupIfAvailable(applicationContext);
+
+        System.out.println("---------stream-----------");
         lookupByStreamOps(applicationContext);
 
         // 关闭应用上下文
@@ -49,10 +55,6 @@ public class ObjectProviderDemo { // @Configuration 是非必须注解
 
     private static void lookupByStreamOps(AnnotationConfigApplicationContext applicationContext) {
         ObjectProvider<String> objectProvider = applicationContext.getBeanProvider(String.class);
-//        Iterable<String> stringIterable = objectProvider;
-//        for (String string : stringIterable) {
-//            System.out.println(string);
-//        }
         // Stream -> Method reference
         objectProvider.stream().forEach(System.out::println);
     }
